@@ -9,15 +9,17 @@ exports.handler = async function (event, context) {
   }
 
   try {
-    const tokenResponse = await axios.post('https://login.microsoftonline.com/common/oauth2/v2.0/token', null, {
-      params: {
-        client_id: process.env.CLIENT_ID,
-        scope: 'offline_access https://graph.microsoft.com/Mail.Read',
-        code: code,
-        redirect_uri: process.env.REDIRECT_URI,
-        grant_type: 'authorization_code',
-        client_secret: process.env.CLIENT_SECRET,
-      },
+    // Build the form data correctly for application/x-www-form-urlencoded
+    const formData = new URLSearchParams();
+    formData.append('client_id', process.env.CLIENT_ID);
+    formData.append('scope', 'offline_access https://graph.microsoft.com/Mail.Read');
+    formData.append('code', code);
+    formData.append('redirect_uri', process.env.REDIRECT_URI);
+    formData.append('grant_type', 'authorization_code');
+    formData.append('client_secret', process.env.CLIENT_SECRET);
+
+    // Send the token request with form-encoded body
+    const tokenResponse = await axios.post('https://login.microsoftonline.com/common/oauth2/v2.0/token', formData.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
