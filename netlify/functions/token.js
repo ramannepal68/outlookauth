@@ -9,14 +9,13 @@ exports.handler = async function (event, context) {
     let tokenResponse;
 
     if (code) {
-      // Exchange authorization code for tokens, no client_secret
+      // Exchange authorization code for tokens WITHOUT client_secret
       const formData = new URLSearchParams();
       formData.append('client_id', process.env.CLIENT_ID);
       formData.append('scope', 'offline_access https://graph.microsoft.com/Mail.Read');
       formData.append('code', code);
       formData.append('redirect_uri', process.env.REDIRECT_URI);
       formData.append('grant_type', 'authorization_code');
-      // No client_secret appended for public client
 
       tokenResponse = await axios.post(
         'https://login.microsoftonline.com/common/oauth2/v2.0/token',
@@ -25,13 +24,12 @@ exports.handler = async function (event, context) {
       );
 
     } else if (refreshToken) {
-      // Refresh access token using refresh token, no client_secret
+      // Refresh token request WITHOUT client_secret
       const formData = new URLSearchParams();
       formData.append('client_id', process.env.CLIENT_ID);
       formData.append('scope', 'offline_access https://graph.microsoft.com/Mail.Read');
       formData.append('refresh_token', refreshToken);
       formData.append('grant_type', 'refresh_token');
-      // No client_secret appended for public client
 
       tokenResponse = await axios.post(
         'https://login.microsoftonline.com/common/oauth2/v2.0/token',
