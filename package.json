@@ -1,0 +1,9 @@
+{
+  "name": "microsoft-oauth-netlify",
+  "dependencies": {
+    "axios": "^0.27.2"
+  },
+  "scripts": {
+    "start": "netlify dev"
+  }
+}
