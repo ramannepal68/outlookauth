@@ -33,7 +33,7 @@ exports.handler = async function (event, context) {
   } catch (error) {
     return {
       statusCode: 500,
-      body: \`Token exchange failed: \${error.response?.data?.error_description || error.message}\`,
+      body: `Token exchange failed: ${error.response?.data?.error_description || error.message}`,
     };
   }
 };
